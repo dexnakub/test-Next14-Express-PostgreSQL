@@ -18,7 +18,7 @@ const InputField: React.FC<InputFieldProps> = ({ id, label, type, value, onChang
         value={value}
         onChange={onChange}
         required
-        className="w-full border border-gray-300 px-3 py-2 rounded"
+        className="w-full border border-gray-300 px-3 py-2 rounded mt-2"
       />
     </div>
   );

@@ -46,6 +46,29 @@ const FormCreate: React.FC<InputFieldProps> = ({ gender, tambon, amphur, provinc
         return initialFormData;
     });
 
+    const [filteredAmphur, setFilteredAmphur] = useState<Amphur[]>([]);
+    const [filteredTambon, setFilteredTambon] = useState<Tambon[]>([]);
+
+    useEffect(() => {
+        const newFilteredAmphur = amphur.filter((a: any) => a.province_id == formData.provinceId);
+        setFilteredAmphur(newFilteredAmphur);
+        if (newFilteredAmphur.length === 0) {
+            setFormData(prevData => ({ ...prevData, amphurId: 0, tambonId: 0 }));
+        } else if (!newFilteredAmphur.find(a => a.id === formData.amphurId)) {
+            setFormData(prevData => ({ ...prevData, amphurId: newFilteredAmphur[0].id, tambonId: 0 }));
+        }
+    }, [formData.provinceId]);
+
+    useEffect(() => {
+        const newFilteredTambon = tambon.filter((t: any) => t.amphure_id == formData.amphurId);
+        setFilteredTambon(newFilteredTambon);
+        if (newFilteredTambon.length === 0) {
+            setFormData(prevData => ({ ...prevData, tambonId: 0 }));
+        } else if (!newFilteredTambon.find(t => t.id === formData.tambonId)) {
+            setFormData(prevData => ({ ...prevData, tambonId: newFilteredTambon[0].id }));
+        }
+    }, [formData.amphurId]);
+    
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
@@ -106,17 +129,19 @@ const FormCreate: React.FC<InputFieldProps> = ({ gender, tambon, amphur, provinc
                 id="tambonId"
                 label="ตำบล"
                 value={formData.tambonId ?? ""}
-                options={tambon}
+                options={filteredTambon}
                 onChange={handleChange}
                 require={true}
+                disabled={!formData.amphurId}
             />
             <Select
                 id="amphurId"
                 label="อำเภอ"
                 value={formData.amphurId ?? ""}
-                options={amphur}
+                options={filteredAmphur}
                 onChange={handleChange}
                 require={true}
+                disabled={!formData.provinceId}
             />
             <Select
                 id="provinceId"
@@ -125,6 +150,7 @@ const FormCreate: React.FC<InputFieldProps> = ({ gender, tambon, amphur, provinc
                 options={province}
                 onChange={handleChange}
                 require={true}
+                disabled={false}
             />
             <InputField
                 id="idCardExpirationDate"

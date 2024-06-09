@@ -26,7 +26,7 @@ export const getTambon = async (req: Request, res: Response, next: NextFunction)
         const client = await database.getPool().connect();
         
         const result = await client.query(
-            `SELECT t.id, t.name_th FROM tambon t`
+            `SELECT t.id, t.name_th, amphure_id FROM tambon t`
         );
 
         client.release();
@@ -41,7 +41,7 @@ export const getAmphur = async (req: Request, res: Response, next: NextFunction)
         const client = await database.getPool().connect();
         
         const result = await client.query(
-            `SELECT a.id, a.name_th FROM amphur a`
+            `SELECT a.id, a.name_th, a.province_id FROM amphur a`
         );
 
         client.release();

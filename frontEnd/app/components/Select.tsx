@@ -6,10 +6,11 @@ interface SelectProps {
     value: string | number | readonly string[];
     options: any[];
     require?: boolean;
+    disabled?: boolean;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Select: React.FC<SelectProps> = ({ id, label, value, require, options, onChange }) => {
+const Select: React.FC<SelectProps> = ({ id, label, value, require, options, onChange, disabled }) => {
 
     return (
         <>
@@ -20,6 +21,7 @@ const Select: React.FC<SelectProps> = ({ id, label, value, require, options, onC
                     value={value}
                     onChange={onChange}
                     required={require} 
+                    disabled={disabled}
                     className="w-full border border-gray-300 px-3 py-2 rounded mt-2"
                 >
                     {options.map((optionValue, index) => (
