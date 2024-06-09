@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_container_100stars
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data_100stars:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    # networks:
+    #   - backend
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_container_100stars
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
+    volumes:
+      - pgadmin_data_100stars:/var/lib/pgadmin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  # backend-api:
+  #   build: .
+  #   container_name: backend_api
+  #   ports:
+  #     - 5000:5000
+  #   depends_on:
+  #     - db
+
+volumes:
+  postgres_data_100stars:
+    driver: local
+  pgadmin_data_100stars:
+    driver: local
+
+
